@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="description" content="">
+            <meta name="author" content="">
+            <!--- <meta http-equiv="refresh" content="10"> -->
+            <script src="https://cdn.plot.ly/plotly-1.35.2.min.js"></script>
+            <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+            <script type="text/javascript" src="js/jquery-3.3.1.slim.min.js"></script>
+            <title>Secant</title>
+        
+            <!-- Bootstrap core CSS -->
+            <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        
+            <!-- Custom fonts for this template -->
+            <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+            <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+            <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+            <script src="https://unpkg.com/mathjs@5.4.0/dist/math.min.js"></script>
+            <script src="https://cdn.plot.ly/plotly-1.35.2.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=AM_CHTML"></script>
+            <script src="https://unpkg.com/mathjs@5.4.1/dist/math.min.js"></script>
+            <!-- Custom styles for this template -->
+            <link href="css/clean-blog.min.css" rel="stylesheet">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://unpkg.com/mathjs@5.4.0/dist/math.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-1.35.2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=AM_CHTML"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/simple-sidebar.css" rel="stylesheet">
+  <style type="text/css">
+    .dropdown-container {
+  display: none;
+  
+  padding-left: 8px;
+}
+  </style>
+</head>
+
+<body>
+
+  <div class="d-flex" id="wrapper">
+
+    
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+      <div id="menu"></div>
+      
+
+      <div class="container-fluid">
+         <div class="row">
+          
+            <div class="col-lg-6 col-md-10 mx-auto">
+              <center><h2 style="margin: 5px 20px 5px 20px; text-align: center;">Secant Method</h2></center><br>
+
+<form id="form">
+        <div class="w3-row">
+            <div class="w3-col s4  w3-center"> <center><input type="text" class="w3-input w3-hover" style="width:80% " id="func" placeholder="function" ></center> </div>
+            <div class="w3-col s4  w3-center"><center><input type="text" class="w3-input w3-hover" style="width:80%" id="xl" placeholder="Xl"></center></div>
+            <div class="w3-col s4  w3-center"><center><input type="text" class="w3-input w3-hover" style="width:80%" id="xr" placeholder="Xr"></center></div>
+          </div>
+      <br>
+        <center><input type="submit" value="calculate" onclick="appendText(xl.value,xr.value)" id="button" class="w3-button w3-section w3-pink w3-ripple w3-hover-red" </center>  </form>
+
+<div class="w3-container w3-padding-16 w3-card" style="background-color :white"> 
+    <div id="plot"></div>
+</div>
+
+<br>
+<div class="w3-container w3-padding-16 w3-card" style="background-color :white" id="showx"> 
+  <h3>คำนวณหารากของสมการ</h3> 
+  
+  <hr>
+
+  <table id="showans">
+    <tr>
+      <th width="20%">Iteration No.</th>
+      <th  width="20%">X<sub>l</sub></th>
+      <th  width="20%">X<sub>r</sub></th>
+      <th  width="20%">X</th>
+      <th  width="20%">error</th>
+    </tr>
+    <tr class="list-data">
+      <td id="Iteration"><p></p></td>        
+      <td id="xl1"></td>
+      <td id="xr1"></td>
+      <td id="x"></td>
+      <td id="error"></td>
+    </tr>
+  </table>
+
+            </div>
+
+
+
+
+
+
+
+                    </div>
+                </div>
+                
+        </div>
+      </div>
+    </body>
+
+    </div>
+    <!-- /#page-content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Menu Toggle Script -->
+  <script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+  </script>
+    <script>
+/* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+var dropdown = document.getElementsByClassName("dropdown-btn");
+var i;
+
+for (i = 0; i < dropdown.length; i++) {
+  dropdown[i].addEventListener("click", function() {
+  this.classList.toggle("active");
+  var dropdownContent = this.nextElementSibling;
+  if (dropdownContent.style.display === "block") {
+  dropdownContent.style.display = "none";
+  } else {
+  dropdownContent.style.display = "block";
+  }
+  });
+}
+</script>
+<script>
+// Open and close the sidebar on medium and small screens
+
+// Accordions
+function myAccordion(id) {
+  var x = document.getElementById(id);
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+    x.previousElementSibling.className += " w3-pink w3-text-white w3-hover-pink";
+  }
+   else { 
+    x.className = x.className.replace("w3-show", "w3-hide");
+    x.previousElementSibling.className.replace(" w3-pink w3-text-white w3-hover-pink", " ");
+  }
+}
+
+
+
+</script>
+
+<script>
+  // draw graaph
+    function draw() {
+      try {
+        // compile the expression once
+        const expression = document.getElementById('func').value
+        const expr = math.compile(expression)
+  
+        // evaluate the expression repeatedly for different values of x
+        const xValues = math.range(-10, 10, 0.5).toArray()
+        const yValues = xValues.map(function (x) {
+          return expr.eval({x: x})
+        })
+  
+        // render the plot using plotly
+        const trace1 = {
+          x: xValues,
+          y: yValues,
+          type: 'scatter'
+        }
+        const data = [trace1]
+        Plotly.newPlot('plot', data)
+      }
+      catch (err) {
+        console.error(err)
+        alert(err)
+      }
+    }
+  
+    document.getElementById('form').onsubmit = function (event) {
+      event.preventDefault();
+      draw();
+      appendText();
+    }
+    draw();
+
+
+// cal bisection
+var n=0;
+var functiontest;
+function appendText(xl,xr) {
+
+  if(document.getElementById("func").value!="" && document.getElementById("xr").value!="" && document.getElementById("xl").value!="" && n<1){ 
+    var xnew = 0;
+    var xold = 0;
+    var sum= parseFloat(0.000000)  ;
+    var data  = new Array(); 
+   
+    data['xxl'] = new Array();
+    data['xxr'] = new Array();
+    data['xx'] = new Array();
+    data['xerror'] = new Array();
+
+  
+do{ 
+    
+    xnew = xr - findx(xr,xl,func(xr),func(xl)); 
+    sumold =  data['xerror'][n-1];
+      sum = err(xnew,xl);  
+    data['xxl'][n]  =   xl;
+    data['xxr'][n]  =   xr;
+    data['xx'][n]   =   xnew;
+    data['xerror'][n] =   Math.abs(sum);
+    xl=xr;
+    xr =  xnew;    
+    console.log(Math.abs(sum));
+    n++;  
+}while(Math.abs(sum)!=sumold && Math.abs(sum)>0.000001 ) ;
+
+        var a=1;
+        var loopTag = $(".list-data").clone(true); // clone แถวที่ทำการลูปไว้ในตัวแปร
+        var newTag =""; // สร้างตัวแปรไว้เก็บ html tags ที่สร้างมาใหม่  
+       for(i=0;i<n;i++){ // วนลูปข้อมูล array ของ object
+            var objHTML = loopTag; // ใช้ตัวแปร object ที่ clone มา
+            objHTML.find("td:eq(0)").html(a).end()
+            .find("td:eq(1)").html( data['xxl'][i]).end()
+            .find("td:eq(2)").html( data['xxr'][i]).end()
+            .find("td:eq(3)").html( data['xx'][i]).end()
+            .find("td:eq(4)").html( data['xerror'][i]).end();
+            newTag += $(objHTML)[0].outerHTML; // สร้าง tags ข้อมูลใหม่แต่ละแถว
+            a++;
+        }
+        $(".list-data").replaceWith(newTag); // แทนที่แถวที่จะทำการลูปด้วยข้อมูลใหม่  
+  }
+
+ 
+  $('body,html').animate({
+            scrollTop : 1010
+         }, 1100);
+}
+
+function findx(xr,xl,fr,fl){
+  var a = fr*(xr-xl);
+  var b = fr-fl;
+  return a/b;
+
+}
+
+function err(xm, x) {
+      return (xm-x)/xm;
+  }
+
+function func(X) {
+      var expression = document.getElementById("func").value;
+      expr = math.compile(expression);
+      let scope = {x:parseFloat(X)};
+      return expr.eval(scope);
+  }
+
+
+</script>
+
+
+</body>
+
+</html>

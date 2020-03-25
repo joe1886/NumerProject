@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Numerical Method</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/simple-sidebar.css" rel="stylesheet">
+  <style type="text/css">
+    .dropdown-container {
+  display: none;
+  
+  padding-left: 8px;
+}
+  </style>
+</head>
+
+<body>
+
+  <div class="d-flex" id="wrapper">
+
+   
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+
+      <div id="menu"></div>
+
+      <div class="container-fluid">
+       <div class="form-group">
+                  <h2 ><strong>Input</strong><br></h2>
+                  <span class="input-group-text" id="basic-addon1">Size</span>
+
+                  <input type="input" class="form-control" name="vari">
+
+                </div>
+              </div>
+</br>
+              <div align="left" class="col-lg-offset-1 col-lg-10">
+                <button type="submit" class="btn btn-primary" onclick="submit()">Enter</button>
+              </div>
+      
+
+         
+                  <div class="card col-md-100 ml-auto mr-auto col-lg-10 col-lg-offset-2">
+                    <h2 class="tm-block-title"><strong></br>Variable Input</strong><br></h2>
+
+                      <div align="center">
+                      <div class="card-body">
+
+                    <form id="form2">
+                       <div id="myDiv"></div>
+                    </form>
+                    </div>
+                  </div>
+                   <div id="plot" class="pot1"></div>
+              <div id="breadcrumb" class="hoc clear"></div>
+              <div class="card col-md-8 ml-auto mr-auto col-lg-6 col-lg-offset-6">
+                <h2 class="tm-block-title"><strong>Output</strong><br></h2>
+
+                <table name="show" class="table tablesorter">
+                  <tr>
+                    <th>X<sub>1</sub></th>
+                    <th>X<sub>2</sub></th>
+                    <th>X<sub>3</sub></th>
+                  </tr>
+                </table>
+              </div>
+           
+
+    </div>
+    <!-- /#page-content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-1.35.2.min.js"></script>
+    <script>
+     var gnum
+
+
+     function submit(){
+       let num =document.getElementsByName("vari")[0].value
+       gnum=num
+
+         document.getElementById('myDiv').innerHTML = ''
+         document.getElementsByName('show')[0].innerHTML = ''
+         var  enter= document.createElement("br");
+         var x=[],ans=[]
+         for( var i=0; i<num; i++ ) {
+           x.push( [] );
+         }
+       for(var i=0;i<num;i++){
+         for(var j=0;j<num;j++){
+           x[i].push(document.createElement("INPUT"));
+           x[i][j].setAttribute("type", "text");
+           x[i][j].setAttribute("id", "in"+i+""+j);
+           x[i][j].setAttribute("class", "form-control");
+       }
+     }
+     for(var i=0;i<num;i++){
+          ans.push(document.createElement("INPUT"));
+         ans[i].setAttribute("type", "text");
+         ans[i].setAttribute("id", "ans"+i);
+         ans[i].setAttribute("class", "f0orm-control");
+
+
+       }
+       for(var i=0;i<num;i++){
+         var para = document.createElement("div");
+         para.setAttribute("class", "row");
+//เป็นแนวตั้งได้ไงไม่รู้
+         for(var j=0;j<num;j++){
+           var col= document.createElement("div");
+           col.appendChild(x[i][j]);
+           x[i][j].setAttribute("placeholder", "X"+(j+1));
+           para.appendChild(col)
+
+         }
+         para.insertAdjacentHTML( 'beforeend'," = ");
+         var col= document.createElement("div");
+         col.appendChild(ans[i]);
+         ans[i].setAttribute("placeholder", "B"+(i+1));
+         para.appendChild(col)
+
+         document.getElementById("myDiv").appendChild(para);
+       }
+     var  sum= document.createElement("INPUT");
+        sum.setAttribute("type","submit")
+        sum.setAttribute("value","submit")
+        sum.setAttribute("id","sum")
+        sum.setAttribute("class","btn btn-fill btn-primary")
+
+        document.getElementById("myDiv").appendChild(sum);
+
+      }
+      function cramer(){
+      var matrix=[],answer=[]
+      for( var i=0; i<gnum; i++ ) {
+      matrix.push( [] );
+     }
+    for(var i=0;i<gnum;i++){
+      for(var j=0;j<gnum;j++){
+        matrix[i].push(parseFloat(document.getElementById("in"+i+j).value))
+      }
+    }
+    console.log(matrix)
+   for(var i=0;i<gnum;i++){
+         answer.push(parseFloat(document.getElementById("ans"+i).value))
+      }
+    console.log(answer)
+    var result = cramersRule(matrix,answer);
+    console.log(result);
+    var html =  "<thead><tr>"
+    for(var i=0; i<result .length; i++){
+      html += "<th>X<sub>" + (i+1) + "</sub></th>";
+    }
+
+    html+="</tr></thead><tr>"
+
+    for (var i=0; i<result .length; i++) {
+      html += "<td>" + result[i] + "</td>";
+
+
+    }
+
+    // ATTACH HTML TO CONTAINER
+    document.getElementsByName("show")[0].innerHTML = html;
+
+    }
+
+      function cramersRule(matrix,freeTerms) {
+        var det = detr(matrix),
+       returnArray = [],
+       i,
+       tmpMatrix;
+
+     for(i=0; i < matrix[0].length; i++) {
+       var tmpMatrix = insertInTerms(matrix, freeTerms,i)
+       returnArray.push(detr(tmpMatrix)/det)
+     }
+     return returnArray;
+    }
+
+    function insertInTerms(matrix, ins, at) {
+     var tmpMatrix = clone(matrix),
+       i;
+     for(i=0; i < matrix.length; i++) {
+       tmpMatrix[i][at] = ins[i];
+     }
+     return tmpMatrix;
+    }
+    function detr(m) {
+     var ret = 1,
+       k,
+       A=clone(m),
+       n=m[0].length,
+       alpha;
+
+     for(var j =0; j < n-1; j++) {
+       k=j;
+       for(i=j+1;i<n;i++) { if(Math.abs(A[i][j]) > Math.abs(A[k][j])) { k = i; } }
+       if(k !== j) {
+           temp = A[k]; A[k] = A[j]; A[j] = temp;
+           ret *= -1;
+       }
+       Aj = A[j];
+       for(i=j+1;i<n;i++) {
+         Ai = A[i];
+                alpha = Ai[j]/Aj[j];
+                for(k=j+1;k<n-1;k+=2) {
+                    k1 = k+1;
+                    Ai[k] -= Aj[k]*alpha;
+                    Ai[k1] -= Aj[k1]*alpha;
+                }
+                if(k!==n) { Ai[k] -= Aj[k]*alpha; }
+            }
+            if(Aj[j] === 0) { return 0; }
+            ret *= Aj[j];
+         }
+        return Math.round(ret*A[j][j]*100)/100;
+    }
+    function clone(m) {
+     return m.map(function(a){return a.slice();});
+    }
+    document.getElementById('form2').onsubmit = function (event) {
+      event.preventDefault()
+    cramer()
+    //alert(gnum)
+  }
+
+ </script>
+  <!-- Menu Toggle Script -->
+  <script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+  </script>
+  <script>
+/* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+var dropdown = document.getElementsByClassName("dropdown-btn");
+var i;
+
+for (i = 0; i < dropdown.length; i++) {
+  dropdown[i].addEventListener("click", function() {
+  this.classList.toggle("active");
+  var dropdownContent = this.nextElementSibling;
+  if (dropdownContent.style.display === "block") {
+  dropdownContent.style.display = "none";
+  } else {
+  dropdownContent.style.display = "block";
+  }
+  });
+}
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  
+
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="description" content="">
+            <meta name="author" content="">
+            <!--- <meta http-equiv="refresh" content="10"> -->
+            <script src="https://cdn.plot.ly/plotly-1.35.2.min.js"></script>
+            <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+            <script type="text/javascript" src="js/jquery-3.3.1.slim.min.js"></script>
+            <title>One-point iteration Method</title>
+        
+            <!-- Bootstrap core CSS -->
+            <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        
+            <!-- Custom fonts for this template -->
+            <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+            <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+            <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+            <script src="https://unpkg.com/mathjs@5.4.0/dist/math.min.js"></script>
+            <script src="https://cdn.plot.ly/plotly-1.35.2.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=AM_CHTML"></script>
+            <script src="https://unpkg.com/mathjs@5.4.1/dist/math.min.js"></script>
+            <!-- Custom styles for this template -->
+            <link href="css/clean-blog.min.css" rel="stylesheet">
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/simple-sidebar.css" rel="stylesheet">
+
+  <style type="text/css">
+    .dropdown-container {
+  display: none;
+  
+  padding-left: 8px;
+}
+  </style>
+</head>
+
+<body>
+
+    <div class="d-flex" id="wrapper">
+
+    
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+      <div id="menu"></div>
+      
+
+      <div class="container-fluid">
+         <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+                <div name="calc">
+                  <center><h1>One-point iteration Method</h1>
+                    <div class="input-group-sm mb-3">
+                         <form name="formulario" onsubmit="return procesar(this);return drawChart(this)">
+                            จุดเริ่มต้น
+                            <input name="x" type="text" size="4" />
+                            x=
+                            <input name="func" type="text" size="15" />
+                            <input type="submit" value="Procesar" />
+                          </form>
+<div id = "mychart" style="width: 640px; height: 480px;">
+                              <table align="center" bgcolor="white">
+    <tr>
+      <th>
+
+        <br/>
+        <div id="resultado"></div>
+
+      </th>
+    </tr>
+  </table>
+  <center> 
+                    </div>
+
+                    </div>
+                </div>
+                
+        </div>
+      </div>
+    </body>
+    <script type="text/javascript">
+
+function funcion(func,x) {
+  var newFunc = func.replace(/x/g,x);
+  return eval(newFunc);
+}
+
+function derivada(x) {
+  return -Math.sin(x) - 3.0 * x * x * x;
+}
+
+function procesar(formulario) {
+  var i = 0;
+  var func = document.getElementsByName("func")[0].value;
+  var err, x_1, x = parseFloat(formulario.x.value);
+  var resultado = '<table border="1"><thead><tr><td align="center">i</td><td align="center">x<sub></sub></td><td align="center">error</td></tr></thead><tbody>';
+  var graph = new Array();
+  do {
+    
+    x_1 = funcion(func,x);
+    err = Math.abs(((x_1 - x) / x_1)*100);
+    resultado += '<tr><td>x<sub>' + i + '</sub></td><td>' + x_1 + '</td><td>' + err + '</td></tr>';
+    x=x_1;
+    i++;
+  } while ( i < 100);
+  document.getElementById('resultado').innerHTML = resultado + '</tbody></table><br>' + (i == 100 ? 'La solucion no es convergente. ' : 'คำตอบ ' + x);
+
+  return false;
+}drawChart(graph,x_1);
+
+        function drawChart(func,x)//เขียนกราฟ
+        {
+          var trace1 = {
+          x: x_1, 
+          y: func, 
+          name: 'Y', 
+          type: 'scatter'
+          };
+
+        var func = [trace1];
+
+        var layout = {
+          title: 'Graph Of F(x)', 
+          yaxis: {title: 'Y'}, 
+          yaxis2: {
+            title: 'yaxis2 title', 
+            titlefont: {color: 'rgb(148, 103, 189)'}, 
+            tickfont: {color: 'rgb(148, 103, 189)'}, 
+            overlaying: 'y', 
+            side: 'right'
+          },
+          xaxis:{title:'X'}
+        };
+
+        Plotly.newPlot('mychart', func, layout, {showSendToCloud: true});
+        }
+    </script>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Menu Toggle Script -->
+  <script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+
+  </script>
+  <script>
+/* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+var dropdown = document.getElementsByClassName("dropdown-btn");
+var i;
+
+for (i = 0; i < dropdown.length; i++) {
+  dropdown[i].addEventListener("click", function() {
+  this.classList.toggle("active");
+  var dropdownContent = this.nextElementSibling;
+  if (dropdownContent.style.display === "block") {
+  dropdownContent.style.display = "none";
+  } else {
+  dropdownContent.style.display = "block";
+  }
+  });
+}
+</script>
+</body>
+
+</html>
